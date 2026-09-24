@@ -1,0 +1,13 @@
+name: ci
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: foundry-rs/foundry-toolchain@v1
+      # forge-std is not vendored: the test dependency is fetched here so the
+      # repository stays free of a committed submodule
+      - run: forge install foundry-rs/forge-std
+      - run: forge fmt --check
+      - run: forge test -vvv
